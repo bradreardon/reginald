@@ -21,6 +21,7 @@ def callback():
 
     name, uid, text = data['name'], data['user_id'], data['text']
     process_message(name, uid, text)
+    return 'OK'
 
 
 def process_message(name, uid, text):

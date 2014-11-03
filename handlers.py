@@ -2,7 +2,7 @@ import random
 
 import requests
 
-from groupme_api import post_message, post_image, upload_image
+from groupme_api import post_message, upload_image
 from defines import MAGIC_8_BALL_RESPONSES, COOL_GUY_RESPONSES
 
 
@@ -20,11 +20,23 @@ def cool_guy(name, uid, text):
 
 
 def nigel_thornberry(name, uid, text):
-    r = requests.get("http://www.reddit.com/r/smashing/hot.json")
-    posts = r.json()['data']['children']
-    post = random.choice(posts)
-    url = post['data']['url']
+    bot_uid = u'173723'
 
-    image = requests.get(url)
-    image_url = upload_image(image.content)
-    post_image(image_url)
+    if bot_uid != uid:
+        ALLOWED_EXTENSIONS = ('.jpg', '.gif')
+        headers = {'User-Agent': 'Sir Reginald, courtesy of /r/PixelEater'}
+        r = requests.get("http://www.reddit.com/r/smashing/hot.json", headers=headers)
+        posts = r.json()['data']['children']
+
+        def get_link(posts):
+            post = random.choice(posts)
+            url = post['data']['url']
+            if url.endswith(ALLOWED_EXTENSIONS):
+                return url
+            else:
+                return get_link(posts)
+
+        url = get_link(posts)
+        image = requests.get(url)
+        image_url = upload_image(image.content)
+        post_message('SMASHING INDEED', picture_url=image_url)
