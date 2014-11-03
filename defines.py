@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 MAGIC_8_BALL_RESPONSES = [
     "It is certain",
     "It is decidedly so",
