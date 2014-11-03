@@ -5,7 +5,6 @@ import os
 
 from flask import Flask, request
 
-import groupme_api
 import handlers
 
 app = Flask(__name__)
@@ -28,6 +27,7 @@ def process_message(name, uid, text):
     regex = functools.partial(re.compile, flags=re.IGNORECASE + re.UNICODE)
     processors = {
         regex('magic (8|eight) ball'): handlers.magic_8_ball,
+        regex('/cool guy$'): handlers.cool_guy,
     }
 
     for pattern, process_func in processors.iteritems():
