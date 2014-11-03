@@ -18,3 +18,33 @@ def post_message(text, attachments=[]):
     }
 
     requests.post(endpoint, data=json.dumps(payload), headers=headers)
+
+
+def upload_image(image):
+    endpoint = 'https://image.groupme.com/pictures'
+    access_token = os.environ.get('ACCESS_TOKEN')
+
+    payload = {
+        'access_token': access_token,
+    }
+
+    files = {
+        'file': image
+    }
+
+    headers = {
+        'Content-Type': 'application/json',
+    }
+
+    r = requests.post(endpoint, data=json.dumps(payload), files=files, headers=headers)
+    print r.json()
+    return r.json()['payload']['url']
+
+
+def post_image(url, text=''):
+    post_message(attachments=[
+        {
+            'type': 'image',
+            'url': '{}.large'.format(url),
+        }
+    ])

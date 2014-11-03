@@ -28,6 +28,7 @@ def process_message(name, uid, text):
     processors = {
         regex('magic (8|eight) ball'): handlers.magic_8_ball,
         regex('/cool guy$'): handlers.cool_guy,
+        regex('smashing'): handlers.nigel_thornberry,
     }
 
     for pattern, process_func in processors.iteritems():
